@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will you be my valentine</title>
+  
+   <link rel="icon" type="image/x-icon" href="https://blogger.googleusercontent.com/img/a/AVvXsEidJOUxauRa2yWdQEHrOmLMjZ27lvuZeSjqwItR5cB_FsJ0THVCgcM90LzARUN3b0cyTBCJT8g11GZ_p2ncnwiy3fWK1YeMc2c-FHx3GaeV8DU8dPldrojm4jKfjqmueYVemJGUWT-HL_sNk08hg_8XIxYyPM03GmUNhNVGOgP5hgRb58hdaEHdeHKDieQ"/>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .body {
+          
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Poppins', sans-serif;
+          background:none; 
+          background-color: #ffe6e6;
+            overflow: hidden;
+            transition: background-color 1s ease, height 1s ease;
+          color:black;
+          overflow: hidden;
+        }
+
+        .wrapper {
+            height: 220px;
+            width: 320px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 1s ease;
+        }
+
+        .lid {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            top: 0;
+            left: 0;
+            border-right: 160px solid transparent;
+            border-bottom: 120px solid transparent;
+            border-left: 160px solid transparent;
+            transform-origin: top;
+            transition: transform 0.3s linear;
+            border-radius: 10px;
+        }
+
+        .lid.one {
+            border-top: 120px solid #ff4d6d;
+            transform: rotateX(0deg);
+            z-index: 3;
+            transition-delay: 0.75s;
+        }
+
+        .lid.two {
+            border-top: 120px solid #e63946;
+            transform: rotateX(90deg);
+            z-index: 1;
+            transition-delay: 0.5s;
+        }
+
+        .envelope {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            top: 0;
+            left: 0;
+            border-top: 120px solid transparent;
+            border-right: 160px solid #ff6b81;
+            border-bottom: 120px solid #ff6b81;
+            border-left: 160px solid #ff7b9c;
+            z-index: 3;
+            border-radius: 10px;
+            transition: transform 1s ease-out;
+        }
+
+        .letter {
+            position: absolute;
+            top: 0;
+            width: 90%;
+            height: 80%;
+            background-color: white;
+            border-radius: 15px;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            opacity: 1;
+            transition: opacity 0.5s ease, width 1s ease, height 1s ease, transform 1s ease;
+        }
+        .letter.animate {
+  transform: translateY(-50px);
+  transition-delay: 0.2s;
+}
+
+        .heart {
+            font-size: 60px;
+            color: #ff4d6d;
+            animation: heartbeat 1s infinite;
+        }
+
+        .letter p {
+            text-align: center;
+            font-size: 22px;
+            color: #e63946;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        /* Hover effect for desktop */
+        .wrapper:hover .lid.one {
+            transform: rotateX(90deg);
+            transition-delay: 0s;
+        }
+
+        .wrapper:hover .lid.two {
+            transform: rotateX(180deg);
+            transition-delay: 0.25s;
+        }
+
+        /* Mobile-friendly styles */
+        @media (max-width: 480px) {
+            .wrapper {
+                transform: scale(0.85);
+            }
+            .letter p {
+                font-size: 18px;
+            }
+
+            .game-container{margin-top: 0;}
+        }
+
+        /* Tap-to-open for mobile */
+        @media (hover: none) {
+            .wrapper:active .lid.one {
+                transform: rotateX(90deg);
+                transition-delay: 0s;
+            }
+
+            .wrapper:active .lid.two {
+                transform: rotateX(180deg);
+                transition-delay: 0.25s;
+            }
+        }
+
+        /* Envelope slides down and page expands when opened */
+        .wrapper.opened .envelope {
+            transform: translateY(100vh);
+        }
+
+        .wrapper.opened .letter {
+            opacity: 1;
+            width: 100vw;
+            height: 100vh;
+            border-radius: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 30px;
+            top: -200px;
+            transform: translateY(-10%);
+            
+        }
+
+        .wrapper.opened .letter p {
+            font-size: 30px;
+        }
+
+        .wrapper.opened .heart {
+            font-size: 100px;
+        }
+
+        .wrapper.opened {
+            transform: scale(1.1);
+        }
+
+        /* Background expands smoothly */
+        body.expanded {
+            height: 100vh;
+            background-color: #ff4d6d;
+          overflow: hidden;
+        }
+
+        .yes-btn, .no-btn {
+            padding: 15px 30px;
+            font-size: 24px;
+            cursor: pointer;
+            border-radius: 5px;
+            border: none;
+            margin: 20px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .yes-btn {
+            background-color: #22c55e;
+            color: white;
+        }
+
+        .no-btn {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+
+        .yes-btn:hover {
+            background-color: #089f3f;
+        }
+
+        .no-btn:hover {
+            background-color: #ddd;
+        }
+
+        .yes-btn.big {
+            font-size: 36px;
+            padding: 20px 40px;
+        }
+
+        .game-container {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+            font-size: 15px;
+        }
+        .gif {
+        width: 200px;
+        height: 200px;
+        border: 5px solid #ff4d6d;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+    }
+
+    .gif img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    #popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            width: 300px;
+            text-align: center;
+        }
+
+        #popup button {
+            margin-top: 10px;
+        }
+
+        /* Overlay to dim the background */
+        #overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+        input {
+            padding: 10px;
+            margin: 10px;
+            border: 2px solid #e91e63;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #e91e63;
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #d32f2f;
+        }
+
+        /* Popup styling */
+        #popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            width: 300px;
+            text-align: center;
+        }
+
+        #popupMessage {
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
+        #popup button {
+            background-color: #f06292;
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        #popup input {
+            width: 100%;
+            padding: 8px;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        /* Overlay background dimming */
+        #overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        /* Heart-shaped icons */
+        .heart {
+            color: #e91e63;
+            font-size: 25px;
+            margin-top: 10px;
+        }
+        
+    </style>
+  
+  
+   <script>
+      // Function to get the name from the URL (directly after '?')
+          function getNameFromURL() {
+            const urlParams = window.location.search.substring(1); // Remove the '?'
+            return urlParams || null;
+        }
+
+        // Function to display name from URL
+        function displayNameFromURL() {
+            const name = getNameFromURL();
+            const nameDisplay = document.getElementById('nameDisplay');
+            if (name) {
+                nameDisplay.textContent = name;
+            } else {
+                nameDisplay.textContent = 'Guest';
+            }
+        }    // Call displayNameFromURL when the page loads to update the name
+        window.onload = displayNameFromURL;
+  </script>
+</head>
+<body class="body">
+    <div class="wrapper">
+        <div class="lid one"></div>
+        <div class="lid two"></div>
+        <div class="envelope"></div>
+        <div class="letter">
+            <div id="msg">
+                <p>Dear,<span id="nameDisplay"></span></p>
+                <p>Will You Be My Valentine? 💖</p>
+            </div>
+            <div class="game-container" id="game-container">
+                <center>
+                    <div class="gif">
+                       
+                    </div>
+                    <h1 class="que">Will You Be My Valentine? 💖</h1>
+                    <div id="funny-text" class="funny-text"></div>
+                    <div class="buttons">
+                        <button class="yes-btn" id="yes-btn" onclick="showMessage()">Yes 💕</button>
+                        <button class="no-btn" id="no-btn" onclick="changeNoButtonText()">No 😢</button>
+                    </div>
+                    <div id="message" class="message" style="visibility: hidden;">
+                       
+                        <h2 >Yay! I knew it! 😍💖</h2>
+                        <input type="text" id="nameInput" placeholder="Propose others">
+                        <button onclick="generateLink()">Generate Link</button>
+
+                    </div>
+                    
+                    
+                </center>
+            </div>
+        </div>
+    </div>
+ <!-- Popup for copy link and WhatsApp share -->
+ <div id="overlay"></div>
+ <div id="popup">
+     <p id="popupMessage">Generated Link:</p>
+     <input type="text" id="generatedLinkInput" readonly>
+     <br>
+     <button onclick="copyLink()">Copy Link</button>
+     <button onclick="shareOnWhatsApp()">Share on WhatsApp</button>
+     <p class="heart">💖</p>
+ </div>
+
+    <script>
+      
+
+        // Function to generate a new URL with the name as a direct parameter
+        function generateLink() {
+            const nameInput = document.getElementById('nameInput').value;
+            if (nameInput.trim() !== '') {
+                const newUrl = window.location.origin + window.location.pathname + '?' + encodeURIComponent(nameInput);
+                document.getElementById('generatedLinkInput').value = newUrl;
+                showPopup();
+            } else {
+                alert('Please enter a name.');
+            }
+        }
+
+        // Show the popup
+        function showPopup() {
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('popup').style.display = 'block';
+        }
+
+        // Hide the popup
+        function hidePopup() {
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('popup').style.display = 'none';
+        }
+
+        // Copy the generated link to clipboard
+        function copyLink() {
+            const linkInput = document.getElementById('generatedLinkInput');
+            linkInput.select();
+            document.execCommand('copy');
+            alert('Link copied to clipboard!');
+        }
+
+        // Share the generated link on WhatsApp
+        function shareOnWhatsApp() {
+            const link = document.getElementById('generatedLinkInput').value;
+            const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(link)}`;
+            window.open(whatsappUrl, '_blank');
+        }
+
+    
+
+
+const lid = document.querySelector(".lid");
+        document.querySelector('.wrapper').addEventListener('click', function() {
+           // Add a delay before expanding the letter and sliding the envelope
+                const lett = document.querySelector(".letter");
+                lett.classList.add("animate"); // Add the 'animate' class to trigger the transform
+            if (!this.classList.contains('opened')) {
+               
+                setTimeout(() => {
+                    this.classList.add('opened');
+                  lid.style.display = 'none';
+                    document.body.classList.add('expanded');
+                    document.getElementById("msg").style.display = 'none';
+                    document.getElementById("game-container").style.display = 'flex';
+                }, 1500); // 800ms delay to allow the envelope opening animation to complete
+            }
+        });
+
+        const noButton = document.getElementById("no-btn");
+    const yesButton = document.getElementById("yes-btn");
+    const funnyText = document.getElementById("funny-text");
+    const message = document.getElementById("message");
+    const buttons = document.querySelector('.buttons');
+    const gifContainer = document.querySelector(".gif");
+    const que = document.querySelector(".que");
+
+    let funnyMessages = [
+    "Are you sure? 😢",
+    "Think again! 🤔",
+    "You might regret this! 😜",
+    "Come on, say yes! 🥺",
+    "Why not? 😭",
+    "I'll be sad forever! 💔",
+    "You're breaking my heart! 💘",
+    "One more chance? 🥹",
+    "Are you playing hard to get? 😏",
+    "Oops! You missed the love train! 🚂💔",
+    "Reconsider before it's too late! 😜",
+    "Why so cold? 🥶💔",
+    "I can feel my heart breaking... 💔😭",
+    "You sure about that? 🤨",
+    "You don't want to break my heart, do you? 💔😱",
+    "I'm totally okay... NOT! 😆💔",
+    "Wait, was that a 'no'? 😢",
+    "No way! I'm heartbroken now! 😭",
+    "I'll just cry in the corner... 😢",
+    "This is so dramatic! 😂",
+    "You're leaving me hanging! 😯",
+    "You can't be serious! 😝",
+    "I see how it is... 😤",
+    "You just crushed my dreams! 😭💔",
+    "I'm too cute to say no to! 😜",
+    "You'll regret this later... 😏",
+    "I knew it... the heartbreaker! 💔",
+    "You're making me blush... with tears! 😢😳"
+];
+
+
+    const randomGifs = [
+        "https://i.giphy.com/eKfpB6WZeKC1DiGrj8.webp",
+        "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExZW5qdDAydW90cXU2enhrZnN5MHJ1cnIwcDBpbW1za2d5eGsydGRpZCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/jWRCfCpLXCuFGNpTsk/giphy.gif",
+        "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExNmxhaW1hMTB3NWg1dno2M3l1eWR5bTZjNmhjbnhrMjd6NXN5c2RuZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/SXt4oGCf5vaovypcs8/giphy.gif",
+        "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExbXcyZTdtaTVzMGphMXp6Y3Z3aGM2Mm02cW95bWUwcHcyZnhoeTdzMyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/sBiBGN2M6zZmQUFRDz/giphy.gif",
+
+    ];
+
+    const yesGifs = ["https://blogger.googleusercontent.com/img/a/AVvXsEiaolSZ_m8qik9YNzI0aVXbSPUVlGRnb1swqIsgNxfcnB6xWVTGlSXpsAj4MAaTsyEmmgP8hP8GffeM3QwhyNFVGKUIaDx0RkceLXXfZYmHwZAe8KqitfkT2LgEDUCNqDQAgHI_LPbx5-KlP_X8KtvYf4y0yuQpoFgWSWtEBDg-FuJ1tnO_VAduXLqU3go",
+          "https://blogger.googleusercontent.com/img/a/AVvXsEh5hntMNz-A5OWza8mSq4aaE-AGvhqypWrSvGq9zp36peDhAUMbeWbFFNWGCFkvTikUwe1CPZ1qGnUsySuiZXTgLuPTQlvDdcx0D540m2_Er6_VIB7UBKAMGbiuFDmXtfrnSyXcWnx6zsInucRNZRWDNU-k6WHWNtXPRDBYWvCKh41gwpDVElgFlomhiNw",
+            "https://blogger.googleusercontent.com/img/a/AVvXsEhjfG1lBit_X8arLnRKsY-0R0mchf4NgeaVDhsK1vv9wjke-8CYZmuycAzqT3iALsHRpVrA_R1gdfevFvsZtqj6gp2c5nY0uPre5dKwp2xuW_-bT8lJnxDVvBxY66X7RY9uexPxzeI9fEqb-eG80AaMEu9s6yHg6xRLvrYmOb3hIYGe3tJMkKOm6yE7_Zo"];
+
+    function changeNoButtonText() {
+        let randomMsg = funnyMessages[Math.floor(Math.random() * funnyMessages.length)];
+        noButton.innerText = randomMsg;
+        changeGif();
+        increaseYesButtonSize();
+    }
+    gifContainer.innerHTML = `<img src="https://gifdb.com/images/high/cute-love-bear-roses-ou7zho5oosxnpo6k.gif" alt="Funny GIF">`;
+    function changeGif() {
+        let randomGif = randomGifs[Math.floor(Math.random() * randomGifs.length)];
+        gifContainer.innerHTML = `<img src="${randomGif}" alt="Funny GIF">`;
+    }
+
+    function increaseYesButtonSize() {
+        let currentSize = parseInt(window.getComputedStyle(yesButton).fontSize);
+        let newSize = currentSize + 5;
+        yesButton.style.fontSize = `${newSize}px`;
+        yesButton.style.padding = `${newSize / 2}px ${newSize}px`;
+    }
+
+    function showMessage() {
+        message.style.visibility = "visible";
+        buttons.style.display = "none";
+        que.style.display = "none";
+       let yesrandomGif = yesGifs[Math.floor(Math.random() * randomGifs.length)];
+        gifContainer.innerHTML = `<img src="${yesrandomGif}" alt="Happy GIF">`;
+    }
+    </script>
+</body>
+</html>
